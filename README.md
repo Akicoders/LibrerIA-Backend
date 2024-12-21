@@ -514,6 +514,7 @@ Aquí tienes los controladores en formato de referencia API, sin renderizar como
 | `editorial`| object   | **Required**. Editorial to delete      |
 
 ```
+```
 ## Tech Stack
 
 **Server:** Java, Spring Security, Hibernate, Spring Boot
@@ -525,7 +526,7 @@ Lombok
 Google Guava
 
 Apache Commons
-
+```
 
 
 
