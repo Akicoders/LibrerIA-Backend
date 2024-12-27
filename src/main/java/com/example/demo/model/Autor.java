@@ -7,18 +7,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "autores")
+@Table(name = "authors")
 public class Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "autor_id", nullable = false)
     private Integer id;
 
-    @Column(name = "nombre_autor", nullable = false)
+    @Column(name = "name", nullable = false)
     private String nombreAutor;
 
     @Lob
-    @Column(name = "biografia")
+    @Column(name = "biography")
     private String biografia;
 
 }

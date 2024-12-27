@@ -9,35 +9,34 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "libros")
+@Table(name = "books")
 public class Libro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "libro_id", nullable = false)
     private Integer id;
 
-    @Column(name = "titulo", nullable = false)
+    @Column(name = "title", nullable = false)
     private String titulo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "autor_id")
+    @JoinColumn(name = "author_id")
     private Autor autor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "genero_id")
+    @JoinColumn(name = "genre_id")
     private Genero genero;
 
     @Column(name = "isbn", length = 20)
     private String isbn;
 
     @Lob
-    @Column(name = "descripcion")
+    @Column(name = "description")
     private String descripcion;
 
-    @Column(name = "fecha_publicacion")
+    @Column(name = "pulication_date")
     private LocalDate fechaPublicacion;
 
-    @Column(name = "enlace_pdf")
+    @Column(name = "pdf_link")
     private String enlacePdf;
 
 }

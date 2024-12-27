@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -56,7 +57,7 @@ public class UsuarioController {
                                 "nombre": "Juan",
                                 "apellido": "Pérez",
                                 "email": "juan.perez@gmail.com",
-                                "contrasena": "encrypted_password",
+                                "contrasena": "password",
                                 "esAdministrador": false
                             }
                             """
@@ -65,6 +66,7 @@ public class UsuarioController {
     @PostMapping("/usuario/agregar")
     public void agregarUsuario(@RequestBody Usuario usuario) {
         usuario.setFechaRegistro(LocalDate.now());
+        usuario.setContrasena(BCrypt.hashpw(usuario.getContrasena(), BCrypt.gensalt()));
         usuarioService.agregarUsuario(usuario);
     }
 
@@ -90,6 +92,8 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Se verificó la existencia del usuario"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content)
     })
+
+
     @GetMapping("/usuario/existe/{id}")
     public boolean existeUsuario(@PathVariable int id) {
         return usuarioService.existeUsuarioPorId(id);
@@ -106,6 +110,8 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
+
+
     @GetMapping("usuario/{id}")
     public Usuario getUsuario(@PathVariable int id) {
         return usuarioService.obtenerPorId(id);
@@ -118,6 +124,8 @@ public class UsuarioController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Número total de usuarios obtenido exitosamente")
     })
+
+
     @GetMapping("/usuarios/todos")
     public Long contarUsuarios() {
         return usuarioService.contarUsuario();
@@ -131,6 +139,8 @@ public class UsuarioController {
             @ApiResponse(responseCode = "204", description = "Usuario eliminado exitosamente"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content)
     })
+
+
     @DeleteMapping("usuario/{id}")
     public void eliminarUsuario(@PathVariable int id) {
         usuarioService.eliminarPorId(id);

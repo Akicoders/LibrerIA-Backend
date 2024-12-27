@@ -1,40 +1,74 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Slf4j
 @Entity
-@Table(name = "usuarios")
+@Table(name = "users")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "usuario_id", nullable = false)
     private Integer id;
 
-    @Column(name = "nombre", length = 100)
+    @Column(name = "name", length = 100, nullable = false)
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
 
-    @Column(name = "apellido", length = 100)
+    @Column(name = "lastName", length = 100, nullable = false)
+    @NotBlank(message = "El apellido no puede estar vacío")
     private String apellido;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, unique = true)
+    @Email(message = "El correo electrónico no tiene un formato válido")
+    @NotBlank(message = "El correo electrónico no puede estar vacío")
     private String email;
 
-    @Column(name = "contrasena", nullable = false)
+    @Column(name = "password", nullable = false)
+    @NotBlank(message = "La contraseña no puede estar vacía")
     private String contrasena;
 
-    @Column(name = "fecha_registro")
-    private LocalDate fechaRegistro;
+    @Column(name = "registration_Date", nullable = false)
+    private LocalDate fechaRegistro = LocalDate.now();
 
-    @ColumnDefault("0")
-    @Column(name = "es_administrador")
-    private Boolean esAdministrador;
+    @Column(name = "is_Enabled", nullable = false)
+    @ColumnDefault("true")
+    private Boolean isEnable = true;
+
+    @Column(name = "account_No_expired", nullable = false)
+    @ColumnDefault("true")
+    private Boolean accountNonExpired = true;
+
+    @Column(name = "account_No_locked", nullable = false)
+    @ColumnDefault("true")
+    private Boolean accountNonLocked = true;
+
+    @Column(name = "credentials_No_Expired", nullable = false)
+    @ColumnDefault("true")
+    private Boolean credentialsNonExpired = true;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Rol> rols = new HashSet<>();
+
 
 }

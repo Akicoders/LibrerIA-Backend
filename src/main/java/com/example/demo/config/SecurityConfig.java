@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,8 +39,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
                     http.requestMatchers(HttpMethod.GET, "/api/libros").permitAll();
-                    http.requestMatchers(HttpMethod.POST, "/api/libro/agregar").hasAuthority("create");
-                    http.requestMatchers(HttpMethod.GET, "/api/usuarios").hasAuthority("create");
+                    http.requestMatchers(HttpMethod.POST, "/api/libro/agregar").hasAuthority("CREATE");
+                    http.requestMatchers(HttpMethod.GET, "/api/usuarios").hasAuthority("CREATE");
 
                     http.anyRequest().authenticated();
                 })
@@ -54,33 +56,15 @@ public class SecurityConfig {
 
     @Bean
     // Configuracion para traer datos de la bd
-    public AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authenticationProvider(UserDetailsServiceImpl userDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userDetailsService());
+        provider.setUserDetailsService(userDetailsService);
         return provider;
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-       List<UserDetails> userDetails =  new ArrayList<>();
-       userDetails.add(User.withUsername("akihito")
-               .password("akihito123")
-               .roles("ADMIN")
-               .authorities("update","read","write","create")
-               .build() );
-
-        userDetails.add(User.withUsername("pablito")
-                .password("pablito123")
-                .roles("USER")
-                .authorities("read")
-                .build() );
-
-        return new InMemoryUserDetailsManager(userDetails);
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 }
