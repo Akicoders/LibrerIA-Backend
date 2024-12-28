@@ -18,6 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+
     @Override
     public UserDetails loadUserByUsername(String gmail) throws UsernameNotFoundException {
         Usuario user  = usuarioRepository.findByEmail(gmail).orElseThrow(() -> new UsernameNotFoundException(STR."El usuario con el email\{gmail}no existe "));

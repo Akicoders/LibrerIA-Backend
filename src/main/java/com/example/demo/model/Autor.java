@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @Entity
@@ -14,10 +16,18 @@ public class Autor {
     private Integer id;
 
     @Column(name = "name", nullable = false)
-    private String nombreAutor;
+    private String nombre;
 
     @Lob
     @Column(name = "biography")
     private String biografia;
+
+    @Column(name = "birthdate" , nullable = false )
+    private Date fechaNacimiento;
+
+    @Column(name = "nationality" , nullable = false)
+    private String nationalidad;
+
+
 
 }

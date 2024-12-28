@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,6 +30,8 @@ public class LibroController {
             }),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
     @GetMapping("/libros")
     public ImmutableList<Libro> getLibros() {
         return libroService.ObtenerLibros();
@@ -49,15 +52,22 @@ public class LibroController {
             content = @Content(mediaType = "application/json", examples = @ExampleObject(
                     value = """
                             {
-                                "titulo": "El Quijote",
-                                "autor": "Miguel de Cervantes",
-                                "isbn": "978-1234567890",
-                                "editorial": "Anaya",
-                                "anioPublicacion": 1605
+                                 "titulo": "El Nombre del Viento",
+                                 "autor": {
+                                          "id": 1
+                                          },
+                                 "genero": {
+                                           "id": 2
+                                            },
+                                 "isbn": "978-3-16-148410-0",
+                                 "descripcion": "Una novela de fantasía épica escrita por Patrick Rothfuss.",
+                                 "fechaPublicacion": "2007-03-27",
+                                 "enlacePdf": "http://example.com/elnombredelviento.pdf"
                             }
                             """
             ))
     )
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
     @PostMapping("/libro/agregar")
     public void agregarLibro(@RequestBody Libro libro) {
         libroService.agregarLibro(libro);
@@ -72,6 +82,7 @@ public class LibroController {
             @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
     @PostMapping("/libro/actualizar")
     public void actualizarLibro(@RequestBody Libro libro) {
         libroService.actualizarLibro(libro);
@@ -88,6 +99,7 @@ public class LibroController {
             @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
     @GetMapping("/libro/{id}")
     public Libro getLibro(@PathVariable int id) {
         return libroService.obtenerPorId(id);
@@ -101,6 +113,7 @@ public class LibroController {
             @ApiResponse(responseCode = "200", description = "Resultado de la verificación obtenido exitosamente"),
             @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
     @GetMapping("/libro/existe/{id}")
     public boolean existeLibro(@PathVariable int id) {
         return libroService.existeLibroPorId(id);
@@ -113,6 +126,7 @@ public class LibroController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Número total de libros obtenido exitosamente")
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
     @GetMapping("/libros/todos")
     public Long contarLibros() {
         return libroService.contarLibro();
@@ -126,6 +140,7 @@ public class LibroController {
             @ApiResponse(responseCode = "204", description = "Libro eliminado exitosamente"),
             @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
     @DeleteMapping("/libro/{id}")
     public void eliminarLibro(@PathVariable int id) {
         libroService.eliminarPorId(id);
@@ -139,6 +154,7 @@ public class LibroController {
             @ApiResponse(responseCode = "204", description = "Libro eliminado exitosamente"),
             @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
     @DeleteMapping("/libro/eliminar")
     public void eliminarLibro(@RequestBody Libro libro) {
         libroService.eliminarLibro(libro);

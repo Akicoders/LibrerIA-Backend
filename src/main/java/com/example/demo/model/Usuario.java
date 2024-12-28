@@ -3,6 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
@@ -21,17 +22,19 @@ import java.util.Set;
 @Slf4j
 @Entity
 @Table(name = "users")
-public class Usuario {
+public class Usuario  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name", length = 100, nullable = false)
     @NotBlank(message = "El nombre no puede estar vacío")
+    @Size(min = 2, max = 100)
     private String nombre;
 
     @Column(name = "lastName", length = 100, nullable = false)
     @NotBlank(message = "El apellido no puede estar vacío")
+    @Size(min = 2, max = 100)
     private String apellido;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -41,6 +44,7 @@ public class Usuario {
 
     @Column(name = "password", nullable = false)
     @NotBlank(message = "La contraseña no puede estar vacía")
+    @Size(min = 12)
     private String contrasena;
 
     @Column(name = "registration_Date", nullable = false)
@@ -62,13 +66,15 @@ public class Usuario {
     @ColumnDefault("true")
     private Boolean credentialsNonExpired = true;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Rol> rols = new HashSet<>();
+
+
 
 
 }

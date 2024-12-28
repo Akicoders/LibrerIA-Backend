@@ -37,13 +37,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable() )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(http -> {
+               /* .authorizeHttpRequests(http -> {
                     http.requestMatchers(HttpMethod.GET, "/api/libros").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/libro/agregar").hasAuthority("CREATE");
                     http.requestMatchers(HttpMethod.GET, "/api/usuarios").hasAuthority("CREATE");
-
                     http.anyRequest().authenticated();
-                })
+                })*/
                 .build(); //usa el patron de diseño builder
 
     }

@@ -14,6 +14,6 @@ public class Genero {
     private Integer id;
 
     @Column(name = "name", nullable = false, length = 100)
-    private String nombreGenero;
+    private String nombre;
 
 }

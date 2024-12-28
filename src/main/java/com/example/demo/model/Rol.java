@@ -22,7 +22,7 @@ public class Rol {
     @Enumerated(EnumType.STRING)
     private RolEnum rol;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL )
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "role_permission",joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id") )
     private Set<Permiso> permisos = new HashSet<>();
 

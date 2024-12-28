@@ -9,12 +9,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -26,25 +23,25 @@ public class DemoApplication {
 
 	@Bean
 	CommandLineRunner init(UsuarioRepository repo) {
+		// Create Permissions
+		Permiso permisoCrear = Permiso.builder().name("CREATE").build();
+		Permiso permisoLeer = Permiso.builder().name("READ").build();
+		Permiso permisoActualizar = Permiso.builder().name("UPDATE").build();
+		Permiso permisoEliminar = Permiso.builder().name("DELETE").build();
+		// Create Roles
+		Rol rolAdmin = Rol.builder()
+				.rol(RolEnum.ADMIN)
+				.permisos(Set.of(permisoCrear, permisoLeer, permisoActualizar, permisoEliminar))
+				.build();
+		Rol rolDeveloper = Rol.builder()
+				.permisos(Set.of(permisoCrear, permisoLeer, permisoActualizar))
+				.rol(RolEnum.DEVELOPER)
+				.build();
+		Rol rolUser = Rol.builder()
+				.permisos(Set.of(permisoLeer))
+				.rol(RolEnum.USER)
+				.build();
 		return args -> {
-			// Create Permissions
-			Permiso permisoCrear = Permiso.builder().name("CREATE").build();
-			Permiso permisoLeer = Permiso.builder().name("READ").build();
-			Permiso permisoActualizar = Permiso.builder().name("UPDATE").build();
-			Permiso permisoEliminar = Permiso.builder().name("DELETE").build();
-			// Create Roles
-			Rol rolAdmin = Rol.builder()
-					.rol(RolEnum.ADMIN)
-					.permisos(Set.of(permisoCrear, permisoLeer, permisoActualizar, permisoEliminar))
-					.build();
-			Rol rolDeveloper = Rol.builder()
-					.permisos(Set.of(permisoCrear, permisoLeer, permisoActualizar))
-					.rol(RolEnum.DEVELOPER)
-					.build();
-			Rol rolUser = Rol.builder()
-					.permisos(Set.of(permisoLeer))
-					.rol(RolEnum.USER)
-					.build();
 			// Create Users
 			Usuario akicoder = Usuario
 					.builder()

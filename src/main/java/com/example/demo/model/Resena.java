@@ -26,6 +26,9 @@ public class Resena {
     @Column(name = "calification")
     private Integer calificacion;
 
+    @Column(name = "titulo")
+    private String titulo;
+
     @Lob
     @Column(name = "comment")
     private String comentario;

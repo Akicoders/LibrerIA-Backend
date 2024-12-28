@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,6 +30,7 @@ public class GeneroController {
             }),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
     @GetMapping("/generos")
     public ImmutableList<Genero> getGeneros() {
         return generoService.ObtenerGeneros();
@@ -49,12 +51,12 @@ public class GeneroController {
             content = @Content(mediaType = "application/json", examples = @ExampleObject(
                     value = """
                             {
-                                "nombre": "Ficción",
-                                "descripcion": "Género literario que incluye obras imaginativas."
+                                nombre: "Ficcion"
                             }
                             """
             ))
     )
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
     @PostMapping("/genero/agregar")
     public void agregarGenero(@RequestBody Genero genero) {
         generoService.agregarGenero(genero);
@@ -69,6 +71,7 @@ public class GeneroController {
             @ApiResponse(responseCode = "404", description = "Género no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
     @PostMapping("/genero/actualizar")
     public void actualizarGenero(@RequestBody Genero genero) {
         generoService.actualizarGenero(genero);
@@ -82,6 +85,7 @@ public class GeneroController {
             @ApiResponse(responseCode = "200", description = "Resultado de la verificación obtenido exitosamente"),
             @ApiResponse(responseCode = "404", description = "Género no encontrado", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
     @GetMapping("/genero/existe/{id}")
     public boolean existeGenero(@PathVariable int id) {
         return generoService.existeGeneroPorId(id);
@@ -98,6 +102,7 @@ public class GeneroController {
             @ApiResponse(responseCode = "404", description = "Género no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
     @GetMapping("/genero/{id}")
     public Genero getGenero(@PathVariable int id) {
         return generoService.obtenerPorId(id);
@@ -110,6 +115,7 @@ public class GeneroController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Número total de géneros obtenido exitosamente")
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
     @GetMapping("/generos/todos")
     public Long contarGeneros() {
         return generoService.contarGenero();
@@ -123,6 +129,7 @@ public class GeneroController {
             @ApiResponse(responseCode = "204", description = "Género eliminado exitosamente"),
             @ApiResponse(responseCode = "404", description = "Género no encontrado", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
     @DeleteMapping("/genero/{id}")
     public void eliminarGenero(@PathVariable int id) {
         generoService.eliminarPorId(id);
@@ -136,6 +143,7 @@ public class GeneroController {
             @ApiResponse(responseCode = "204", description = "Género eliminado exitosamente"),
             @ApiResponse(responseCode = "404", description = "Género no encontrado", content = @Content)
     })
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
     @DeleteMapping("/genero/eliminar")
     public void eliminarGeneros(@RequestBody Genero genero) {
         generoService.eliminarGenero(genero);
