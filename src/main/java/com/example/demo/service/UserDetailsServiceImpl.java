@@ -14,20 +14,17 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -79,20 +76,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .stream().flatMap(rol -> rol.getPermisos().stream())
                 .forEach(permssion -> authorities.add(new SimpleGrantedAuthority(permssion.getName())));
 
-        return new User(user.getEmail(), user.getContrasena(), user.getIsEnable(), user.getAccountNonExpired(), user.getCredentialsNonExpired(), user.getAccountNonLocked(), authorities );
+        return new User(user.getEmail(), user.getContrasena(), user.getIsEnable(),
+                user.getAccountNonExpired(), user.getCredentialsNonExpired(), user.getAccountNonLocked(), authorities );
     }
 
 
-    public AuthResponse createUser(AuthCreateUserRequest authCreateUserRequest){
+    public AuthResponse createUser(AuthCreateUserRequest authCreateUserRequest, List<String> roleRequest){
         String name = authCreateUserRequest.name();
         String last = authCreateUserRequest.lastName();
         String password = authCreateUserRequest.password();
         String email = authCreateUserRequest.email();
-        List<String> roleRequest = authCreateUserRequest.roleRequest().rolesListName();
         log.info(roleRequest.toString());
         Set<Rol> rols = roleRepository.findRolsByRolIn(roleRequest).stream().collect(Collectors.toSet());
-
-
         if (rols.isEmpty()){
             throw new IllegalStateException("Los roles especificados no existen ");
         }
@@ -126,4 +121,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
        AuthResponse authResponse = new AuthResponse(userCreated.getEmail(), "User Created Sucessfull",accessToken,true);
         return authResponse;
     }
+
+
+
 }
