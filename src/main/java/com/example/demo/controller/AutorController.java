@@ -31,7 +31,7 @@ public class AutorController {
             }),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('USER') ")
     @GetMapping("/autores")
     public ImmutableList<Autor> getAutores() {
         return autorService.ObtenerAutores();
@@ -60,7 +60,7 @@ public class AutorController {
                             """
             ))
     )
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') " )
     @PostMapping("/autor/agregar")
     public void agregarAutor(@RequestBody Autor autor) {
         autorService.agregarAutor(autor);
@@ -75,7 +75,7 @@ public class AutorController {
             @ApiResponse(responseCode = "404", description = "Autor no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') " )
     @PostMapping("/autor/actualizar")
     public void actualizarAutor(@RequestBody Autor autor) {
         autorService.actualizarAutor(autor);
@@ -89,7 +89,7 @@ public class AutorController {
             @ApiResponse(responseCode = "200", description = "Resultado de la verificación obtenido exitosamente"),
             @ApiResponse(responseCode = "404", description = "Autor no encontrado", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('USER') ")
     @GetMapping("/autor/existe/{id}")
     public boolean existeAutor(@PathVariable int id) {
         return autorService.existeAutorPorId(id);
@@ -107,7 +107,7 @@ public class AutorController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('USER') ")
     @GetMapping("/autor/{id}")
     public Autor getAutor(@PathVariable int id) {
         return autorService.obtenerPorId(id);
@@ -121,7 +121,7 @@ public class AutorController {
             @ApiResponse(responseCode = "200", description = "Número total de autores obtenido exitosamente")
     })
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('USER') ")
     @GetMapping("/autores/contar")
     public Long contarAutores() {
         return autorService.contarAutor();
@@ -135,7 +135,7 @@ public class AutorController {
             @ApiResponse(responseCode = "204", description = "Autor eliminado exitosamente"),
             @ApiResponse(responseCode = "404", description = "Autor no encontrado", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') " )
     @DeleteMapping("/autor/{id}")
     public void eliminarAutor(@PathVariable int id) {
         autorService.eliminarPorId(id);
@@ -149,7 +149,7 @@ public class AutorController {
             @ApiResponse(responseCode = "204", description = "Autor eliminado exitosamente"),
             @ApiResponse(responseCode = "404", description = "Autor no encontrado", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') " )
     @DeleteMapping("/autor/eliminar")
     public void eliminarAutor(@RequestBody Autor autor) {
         autorService.eliminarAutor(autor);

@@ -4,8 +4,6 @@ import com.example.demo.business.UsuarioRepository;
 import com.example.demo.model.Usuario;
 import com.google.common.collect.ImmutableList;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UsuarioServiceImpl.class);
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -28,6 +25,8 @@ public class UsuarioServiceImpl implements UsuarioService {
             return ImmutableList.of();
         }
     }
+
+
 
     @Override
     public void agregarUsuario(Usuario usuario) {

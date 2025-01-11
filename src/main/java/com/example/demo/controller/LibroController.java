@@ -31,7 +31,7 @@ public class LibroController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @GetMapping("/libros")
     public ImmutableList<Libro> getLibros() {
         return libroService.ObtenerLibros();
@@ -67,7 +67,7 @@ public class LibroController {
                             """
             ))
     )
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') " )
     @PostMapping("/libro/agregar")
     public void agregarLibro(@RequestBody Libro libro) {
         libroService.agregarLibro(libro);
@@ -82,7 +82,7 @@ public class LibroController {
             @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') " )
     @PostMapping("/libro/actualizar")
     public void actualizarLibro(@RequestBody Libro libro) {
         libroService.actualizarLibro(libro);
@@ -99,7 +99,7 @@ public class LibroController {
             @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @GetMapping("/libro/{id}")
     public Libro getLibro(@PathVariable int id) {
         return libroService.obtenerPorId(id);
@@ -113,7 +113,7 @@ public class LibroController {
             @ApiResponse(responseCode = "200", description = "Resultado de la verificación obtenido exitosamente"),
             @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @GetMapping("/libro/existe/{id}")
     public boolean existeLibro(@PathVariable int id) {
         return libroService.existeLibroPorId(id);
@@ -126,7 +126,7 @@ public class LibroController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Número total de libros obtenido exitosamente")
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @GetMapping("/libros/todos")
     public Long contarLibros() {
         return libroService.contarLibro();
@@ -140,7 +140,7 @@ public class LibroController {
             @ApiResponse(responseCode = "204", description = "Libro eliminado exitosamente"),
             @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') " )
     @DeleteMapping("/libro/{id}")
     public void eliminarLibro(@PathVariable int id) {
         libroService.eliminarPorId(id);
@@ -154,7 +154,7 @@ public class LibroController {
             @ApiResponse(responseCode = "204", description = "Libro eliminado exitosamente"),
             @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') " )
     @DeleteMapping("/libro/eliminar")
     public void eliminarLibro(@RequestBody Libro libro) {
         libroService.eliminarLibro(libro);

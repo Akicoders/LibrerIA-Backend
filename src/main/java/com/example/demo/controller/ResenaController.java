@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-@PreAuthorize("hasRole('USER')")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class ResenaController {
 
     @Autowired
@@ -33,7 +33,7 @@ public class ResenaController {
             @ApiResponse(responseCode = "404", description = "No se encontraron reseñas", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @GetMapping("/resenas")
     public ImmutableList<Resena> getResenas() {
         return service.ObtenerResenas();
@@ -68,7 +68,7 @@ public class ResenaController {
                             """
             ))
     )
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @PostMapping("/resena/agregar")
     public void agregarResena(@RequestBody Resena resena) {
         service.agregarResena(resena);
@@ -83,7 +83,7 @@ public class ResenaController {
             @ApiResponse(responseCode = "404", description = "Reseña no encontrada", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @PostMapping("/resena/actualizar")
     public void actualizarResena(@RequestBody Resena resena) {
         service.actualizarResena(resena);
@@ -97,7 +97,7 @@ public class ResenaController {
             @ApiResponse(responseCode = "200", description = "Se verificó la existencia de la reseña"),
             @ApiResponse(responseCode = "404", description = "Reseña no encontrada", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @GetMapping("/resena/existe/{id}")
     public boolean existeResena(@PathVariable int id) {
         return service.existeResenaPorId(id);
@@ -114,7 +114,7 @@ public class ResenaController {
             @ApiResponse(responseCode = "404", description = "Reseña no encontrada", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @GetMapping("resena/{id}")
     public Resena getResena(@PathVariable int id) {
         return service.obtenerPorId(id);
@@ -127,7 +127,7 @@ public class ResenaController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Número total de reseñas obtenido exitosamente")
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @GetMapping("/resenas/todos")
     public Long contarResenas() {
         return service.contarResena();
@@ -141,7 +141,7 @@ public class ResenaController {
             @ApiResponse(responseCode = "204", description = "Reseña eliminada exitosamente"),
             @ApiResponse(responseCode = "404", description = "Reseña no encontrada", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER')  ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER')  ")
     @DeleteMapping("resena/{id}")
     public void eliminarResena(@PathVariable int id) {
         service.eliminarPorId(id);
@@ -155,7 +155,7 @@ public class ResenaController {
             @ApiResponse(responseCode = "204", description = "Reseña eliminada exitosamente"),
             @ApiResponse(responseCode = "404", description = "Reseña no encontrada", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER')  ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER')  ")
     @DeleteMapping("resena/eliminar")
     public void eliminarResenas(@RequestBody Resena resena) {
         service.eliminarResena(resena);

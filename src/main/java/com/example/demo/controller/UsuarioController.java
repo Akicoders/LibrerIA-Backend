@@ -15,12 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-
+@EnableMethodSecurity(prePostEnabled = true)
 @RestController
 @RequestMapping("/api")
 public class UsuarioController {
@@ -39,11 +40,10 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "No se encontraron usuarios", content = @Content),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') " )
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER')")
     @GetMapping("/usuarios")
     public ImmutableList<Usuario> getUsuarios() {
-
-
         return usuarioService.ObtenerUsuarios();
     }
 
@@ -70,7 +70,7 @@ public class UsuarioController {
                             """
             ))
     )
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @PostMapping("/usuario/agregar")
     public ResponseEntity<String> agregarUsuario(@Valid @RequestBody Usuario usuario, BindingResult bindingResult) {
         usuario.setFechaRegistro(LocalDate.now());
@@ -92,7 +92,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @PostMapping("/usuario/actualizar")
     public void actualizarUsuario(@RequestBody Usuario usuario) {
         usuarioService.actualizarUsuario(usuario);
@@ -107,7 +107,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content)
     })
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER')  ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER')  ")
     @GetMapping("/usuario/existe/{id}")
     public boolean existeUsuario(@PathVariable int id) {
         return usuarioService.existeUsuarioPorId(id);
@@ -125,7 +125,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
     })
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @GetMapping("usuario/{id}")
     public Usuario getUsuario(@PathVariable int id) {
         return usuarioService.obtenerPorId(id);
@@ -139,7 +139,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Número total de usuarios obtenido exitosamente")
     })
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') or hasRole('USER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') or hasRole('ROLE_USER') ")
     @GetMapping("/usuarios/todos")
     public Long contarUsuarios() {
         return usuarioService.contarUsuario();
@@ -154,7 +154,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content)
     })
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER') ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER') ")
     @DeleteMapping("usuario/{id}")
     public void eliminarUsuario(@PathVariable int id) {
         usuarioService.eliminarPorId(id);
@@ -168,7 +168,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "204", description = "Usuario eliminado exitosamente"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content)
     })
-    @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER')  ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DEVELOPER')  ")
     @DeleteMapping("usuario/eliminar")
     public void eliminarUsuarios(@RequestBody Usuario usuario) {
         usuarioService.eliminarUsuario(usuario);
