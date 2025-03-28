@@ -42,14 +42,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
     public AuthResponse loginUser(AuthLoginRequest authLoginRequest){
-        String username = authLoginRequest.username();
+        String email = authLoginRequest.email();
         String password = authLoginRequest.password();
 
-        Authentication authentication = this.authenticate(username,password);
+        Authentication authentication = this.authenticate(email,password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToken = jwtUtils.createToken(authentication);
-        AuthResponse authResponse = new AuthResponse(username,"User Logged successfull", accessToken, true);
+        AuthResponse authResponse = new AuthResponse(email,"User Logged successfull", accessToken, true);
         return authResponse;
     }
 
@@ -67,7 +67,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String gmail) throws UsernameNotFoundException {
-        Usuario user  = usuarioRepository.findByEmail(gmail).orElseThrow(() -> new UsernameNotFoundException(STR."El usuario con el email\{gmail}no existe "));
+        Usuario user  = usuarioRepository.findByEmail(gmail).orElseThrow(() -> new UsernameNotFoundException("El usuario con el email " + gmail + " no existe"));
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
         user.getRols()

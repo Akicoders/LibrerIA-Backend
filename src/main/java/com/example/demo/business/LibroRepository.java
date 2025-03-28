@@ -1,7 +1,6 @@
 package com.example.demo.business;
 
 import com.example.demo.model.Libro;
-import com.example.demo.model.Resena;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;

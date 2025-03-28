@@ -30,6 +30,8 @@ public class AuthenticatorController {
         roleRequest.add("USER");
         return new ResponseEntity<AuthResponse>(this.userDetailsService.createUser(authCreateUser, roleRequest),HttpStatus.CREATED);
     }
+    
+
     @PostMapping("/log-in")
     public ResponseEntity<AuthResponse> login (@RequestBody @Valid AuthLoginRequest userRequest){
         return new ResponseEntity<AuthResponse>(this.userDetailsService.loginUser(userRequest), HttpStatus.OK);
